@@ -37,7 +37,7 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <p className="mt-10 max-w-xl text-lg leading-relaxed text-foreground">
-        Thank you. Your message has reached our team and we will reply within one business day.
+        Thank you. Your message has reached our team and we will get back to you soon.
       </p>
     );
   }
