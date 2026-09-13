@@ -12,4 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // The contact form sends SMTP mail via nodemailer, which needs raw TCP sockets
+  // and the Node runtime. The default cloudflare-module preset cannot run it.
+  nitro: { preset: "vercel" },
 });

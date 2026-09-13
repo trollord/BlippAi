@@ -19,5 +19,21 @@ export const submitEnquiry = createServerFn({ method: "POST" })
       message: data.message,
     });
     if (error) throw new Error("Could not save your message. Please try again.");
-    return { ok: true as const };
+
+    const { isMailConfigured, sendEnquiryEmail } = await import("@/lib/mail.server");
+    if (!isMailConfigured()) {
+      console.warn("[contact] MAIL_USER / MAIL_PASS are not set — enquiry saved but not emailed.", {
+        email: data.email,
+      });
+      return { ok: true as const, notified: false };
+    }
+
+    try {
+      await sendEnquiryEmail(data);
+    } catch (mailError) {
+      console.error("[contact] enquiry saved but delivery failed", mailError);
+      return { ok: true as const, notified: false };
+    }
+
+    return { ok: true as const, notified: true };
   });
