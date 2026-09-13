@@ -80,8 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "BlippAI — Sovereign AI systems you own and run" },
       {
         name: "description",
-        content:
-          "Custom AI systems built, owned and run inside your own infrastructure.",
+        content: "Custom AI systems built, owned and run inside your own infrastructure.",
       },
       { name: "author", content: "BlippAI" },
       { property: "og:title", content: "BlippAI — Sovereign AI systems you own and run" },
@@ -103,7 +102,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
     ],
   }),
 
