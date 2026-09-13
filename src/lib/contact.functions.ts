@@ -11,29 +11,21 @@ const schema = z.object({
 export const submitEnquiry = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("contact_enquiries").insert({
-      name: data.name,
-      email: data.email,
-      organisation: data.organisation || null,
-      message: data.message,
-    });
-    if (error) throw new Error("Could not save your message. Please try again.");
-
     const { isMailConfigured, sendEnquiryEmail } = await import("@/lib/mail.server");
+
     if (!isMailConfigured()) {
-      console.warn("[contact] MAIL_USER / MAIL_PASS are not set — enquiry saved but not emailed.", {
+      console.error("[contact] MAIL_USER / MAIL_PASS are not set — enquiry not delivered.", {
         email: data.email,
       });
-      return { ok: true as const, notified: false };
+      throw new Error("The enquiry form is not connected yet. Please email hello@blippai.com.");
     }
 
     try {
       await sendEnquiryEmail(data);
-    } catch (mailError) {
-      console.error("[contact] enquiry saved but delivery failed", mailError);
-      return { ok: true as const, notified: false };
+    } catch (error) {
+      console.error("[contact] delivery failed", error);
+      throw new Error("We could not send that just now. Please email hello@blippai.com.");
     }
 
-    return { ok: true as const, notified: true };
+    return { ok: true as const };
   });
