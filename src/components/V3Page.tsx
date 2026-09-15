@@ -366,7 +366,7 @@ export function V3Page() {
           id="contact"
           eyebrow="Get in touch"
           title="Bring reliable AI into your operations."
-          lede="Tell us what you are trying to solve. We reply within one business day."
+          lede="Tell us what you are trying to solve. We will get back to you."
         >
           <ContactForm />
         </Section>
@@ -388,7 +388,7 @@ export function V3Page() {
               >
                 hello@blippai.com
               </a>
-              <a
+              {/* <a
                 href="https://www.linkedin.com/"
                 target="_blank"
                 rel="noreferrer"
@@ -401,7 +401,7 @@ export function V3Page() {
               </a>
               <a href="#" className="link-underline transition-colors hover:text-foreground">
                 Terms
-              </a>
+              </a> */}
             </div>
             <p className="mt-8 text-sm text-muted-foreground">2026 BlippAI</p>
           </div>
