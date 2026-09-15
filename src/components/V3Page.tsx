@@ -216,15 +216,55 @@ function useHeaderVisibility() {
 
 export function V3Page() {
   const { hidden, scrolled } = useHeaderVisibility();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /* Hold the page still behind the open menu, and close it on Escape or at desktop width. */
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const onDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    desktop.addEventListener("change", onDesktop);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      desktop.removeEventListener("change", onDesktop);
+    };
+  }, [menuOpen]);
 
   return (
     <div className="lux-page min-h-dvh bg-background">
-      <header className="lux-header" data-hidden={hidden} data-scrolled={scrolled}>
-        <div className="shell grid grid-cols-[minmax(0,1fr)_auto] items-center gap-6 py-5 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-x-16 md:py-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
+      <header
+        className="lux-header"
+        data-hidden={hidden && !menuOpen}
+        data-scrolled={scrolled || menuOpen}
+      >
+        <div className="shell flex items-center justify-between gap-6 py-4 md:grid md:grid-cols-[14rem_minmax(0,1fr)] md:gap-x-16 md:py-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
           <a href="#top" className="flex items-center" aria-label="BlippAI, back to top">
-            <BlippLogo className="h-10 w-auto" />
+            <BlippLogo className="h-8 w-auto md:h-10" />
           </a>
-          <nav className="flex flex-wrap justify-end gap-x-7 gap-y-2 md:justify-start">
+          <button
+            type="button"
+            className="lux-nav-toggle md:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+            <span aria-hidden="true" className="lux-nav-toggle-bar" />
+            <span aria-hidden="true" className="lux-nav-toggle-bar" />
+          </button>
+          <nav className="hidden flex-wrap gap-x-7 gap-y-2 md:flex">
             {NAV.map((item) => (
               <a
                 key={item.href}
@@ -234,6 +274,30 @@ export function V3Page() {
                 {item.label}
               </a>
             ))}
+          </nav>
+        </div>
+
+        <div id="mobile-nav" className="lux-mobile-nav md:hidden" data-open={menuOpen}>
+          <nav className="shell flex flex-col pb-6">
+            {NAV.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                tabIndex={menuOpen ? undefined : -1}
+                className="border-b border-border py-4 text-lg text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href="mailto:hello@blippai.com"
+              onClick={() => setMenuOpen(false)}
+              tabIndex={menuOpen ? undefined : -1}
+              className="mt-6 text-base text-muted-foreground"
+            >
+              hello@blippai.com
+            </a>
           </nav>
         </div>
       </header>

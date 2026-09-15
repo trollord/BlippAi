@@ -223,8 +223,8 @@
   --lux-band-raised: oklch(0.197 0.011 250);
   --lux-rule: oklch(1 0 0 / 8%);
   --lux-rule-highlight: oklch(1 0 0 / 14%);
-  --lux-signal-haze: oklch(0.72 0.16 245 / 14%);
-  --lux-signal-whisper: oklch(0.72 0.16 245 / 6%);
+  --lux-signal-haze: oklch(0.72 0.16 245 / 16%);
+  --lux-signal-whisper: oklch(0.72 0.16 245 / 6.9%);
   --lux-pearl-haze: oklch(0.97 0.004 250 / 5%);
 }
 
@@ -256,6 +256,75 @@
   transform: translateY(-100%);
 }
 
+.lux-nav-toggle {
+  position: relative;
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin-right: -0.625rem;
+  border: 1px solid var(--lux-rule-highlight);
+  border-radius: 999px;
+  color: var(--color-foreground);
+  transition: border-color 0.3s ease;
+}
+
+.lux-nav-toggle:hover {
+  border-color: color-mix(in oklab, var(--color-primary) 55%, transparent);
+}
+
+.lux-nav-toggle-bar {
+  position: absolute;
+  width: 1.125rem;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-nav-toggle-bar:first-of-type {
+  transform: translateY(-3.5px);
+}
+
+.lux-nav-toggle-bar:last-of-type {
+  transform: translateY(3.5px);
+}
+
+.lux-nav-toggle[aria-expanded="true"] .lux-nav-toggle-bar:first-of-type {
+  transform: rotate(45deg);
+}
+
+.lux-nav-toggle[aria-expanded="true"] .lux-nav-toggle-bar:last-of-type {
+  transform: rotate(-45deg);
+}
+
+.lux-mobile-nav {
+  position: absolute;
+  inset: 100% 0 auto;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  border-bottom: 1px solid transparent;
+  background-color: color-mix(in oklab, var(--lux-band-deep) 94%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  transition:
+    max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    border-color 0.3s ease,
+    visibility 0s linear 0.4s;
+}
+
+.lux-mobile-nav[data-open="true"] {
+  max-height: min(70svh, 34rem);
+  overflow-y: auto;
+  opacity: 1;
+  visibility: visible;
+  border-bottom-color: var(--lux-rule);
+  transition-delay: 0s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lux-header {
     transition: none;
@@ -263,6 +332,11 @@
 
   .lux-header[data-hidden="true"] {
     transform: none;
+  }
+
+  .lux-nav-toggle-bar,
+  .lux-mobile-nav {
+    transition: none;
   }
 }
 
