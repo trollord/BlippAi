@@ -15,24 +15,25 @@ const NAV = [
 
 const SHIFT = [
   "For thirty years, software meant a license. You bought a seat, adapted your workflow to someone else's product, and paid again every year to keep using it.",
-  "That model breaks down for AI. The value isn't a static tool anymore. It's a system that has to be trained on your organisation, held to your standards, and run inside your walls. That can't be bought off a shelf. It has to be built as a service, delivered into your environment, and owned by you when it's done.",
+  "That model is upgraded with AI. The value isn't a static tool anymore. It's a system that has to be trained on your organisation, held to your standards, and run inside your walls. That can't be bought off a shelf. It has to be built as a service, delivered into your environment, and owned by you when it's done.",
   "That's the category we build in. Not software you rent. A system you own.",
 ];
 
 const CAPABILITIES = [
   "Runs on the infrastructure you already operate.",
-  "Modelled around the language and constraints of your sector.",
-  "Cloud, private cloud or fully on premise. Your data stays yours.",
-  "Trained on your knowledge, documents and workflows.",
-  "Embedded into how work already happens, never layered on top.",
-  "A foundation model plus specialised small models behind your own inference engine.",
+  "Cloud, private cloud, or fully on premise. Your data never leaves.",
+  "Embedded into existing workflows, never layered on top.",
+  "Modelled on the language, rules and constraints of your sector.",
+  "Trained exclusively on your knowledge, documents and processes.",
+  "Specialised small models running on an inference engine under your control.",
 ];
 
 const HOW_IT_WORKS = [
   "BlippAI's deployed systems form the intelligence layer between your enterprise data and every person, system, and application that depends on it.",
   "It starts with what you already own. Your knowledge. Your documents. Your databases. Your systems. Running on infrastructure you already control.",
-  "One system spans all of it, trained exclusively on your organization. A proprietary foundation model. Specialized SLMs. An enterprise inference engine.",
+  "One custom AI system spans all of it, trained exclusively for your organization to solve your specific problems. A proprietary foundation model. Specialized SLMs. An enterprise inference engine.",
   "It reaches every person, application, workflow, and system that keeps the organization running.",
+  "Most AI stops at information. We build systems that solve real problems through verified, ranked outputs designed to be acted on, with or without human review.",
 ];
 
 const DEPLOYMENT = [
@@ -283,7 +284,7 @@ export function V3Page() {
           id="solutions"
           eyebrow="Solutions"
           title="Infrastructure, not another application."
-          lede="Most AI today is an external tool running on someone else's model, hosted on someone else's servers, with your data passing through it. We build the opposite."
+          lede="Most AI today is an external tool running on someone else's model, hosted on someone else's servers, with your data passing through it. We build the opposite: sovereign AI infrastructure that lives inside your environment and is built exclusively for you."
         >
           <RuledList items={CAPABILITIES} muted />
         </Section>
@@ -301,7 +302,7 @@ export function V3Page() {
               </p>
             ))}
           </div>
-          <ArchitectureDiagram />
+          {/* <ArchitectureDiagram /> */}
         </Section>
 
         <Section
@@ -355,8 +356,9 @@ export function V3Page() {
             ))}
           </div>
           <p className="mt-10 body-base text-muted-foreground">
-            Aligned to GDPR, ISO 27001 and SOC 2 controls, with data residency of your choosing. You
-            own the model weights, the data and the deployment, with no vendor lock in.
+            Designed to meet GDPR, ISO 27001, SOC 2 and other similar requirements. Full data
+            residency control. You own the model weights, the data, and the deployment. Zero vendor
+            lock in.
           </p>
         </Section>
 
