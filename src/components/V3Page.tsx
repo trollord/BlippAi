@@ -216,15 +216,66 @@ function useHeaderVisibility() {
 
 export function V3Page() {
   const { hidden, scrolled } = useHeaderVisibility();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /* The drop-down only exists below md, so close it on Escape or once the desktop nav takes over. */
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const onDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    desktop.addEventListener("change", onDesktop);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      desktop.removeEventListener("change", onDesktop);
+    };
+  }, [menuOpen]);
 
   return (
     <div className="lux-page min-h-dvh bg-background">
-      <header className="lux-header" data-hidden={hidden} data-scrolled={scrolled}>
-        <div className="shell grid grid-cols-[minmax(0,1fr)_auto] items-center gap-6 py-5 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-x-16 md:py-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
+      {/* Sits outside the header: the header's backdrop-filter would otherwise make it the
+          containing block for this fixed scrim and collapse it to the header's own box. */}
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        className="lux-nav-scrim md:hidden"
+        data-open={menuOpen}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      <header
+        className="lux-header"
+        data-hidden={hidden && !menuOpen}
+        data-scrolled={scrolled || menuOpen}
+        data-menu={menuOpen}
+      >
+        <div className="shell flex items-center justify-between gap-6 py-4 md:grid md:grid-cols-[14rem_minmax(0,1fr)] md:gap-x-16 md:py-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
           <a href="#top" className="flex items-center" aria-label="BlippAI, back to top">
-            <BlippLogo className="h-10 w-auto" />
+            <BlippLogo className="h-9 w-auto md:h-10" />
           </a>
-          <nav className="flex flex-wrap justify-end gap-x-7 gap-y-2 md:justify-start">
+          <button
+            type="button"
+            className="lux-nav-toggle md:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span aria-hidden="true" className="lux-nav-toggle-icon">
+              <span className="lux-nav-toggle-bar" />
+              <span className="lux-nav-toggle-bar" />
+              <span className="lux-nav-toggle-bar" />
+            </span>
+          </button>
+          <nav className="hidden flex-wrap gap-x-7 gap-y-2 md:flex">
             {NAV.map((item) => (
               <a
                 key={item.href}
@@ -234,6 +285,35 @@ export function V3Page() {
                 {item.label}
               </a>
             ))}
+          </nav>
+        </div>
+
+        <div
+          id="mobile-nav"
+          className="lux-nav-panel md:hidden"
+          data-open={menuOpen}
+          aria-hidden={!menuOpen}
+        >
+          <nav className="shell flex flex-col pb-6">
+            {NAV.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                tabIndex={menuOpen ? undefined : -1}
+                className="lux-nav-panel-link"
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href="mailto:hello@blippai.com"
+              onClick={() => setMenuOpen(false)}
+              tabIndex={menuOpen ? undefined : -1}
+              className="lux-nav-panel-mail"
+            >
+              hello@blippai.com
+            </a>
           </nav>
         </div>
       </header>
@@ -403,7 +483,9 @@ export function V3Page() {
                 Terms
               </a> */}
             </div>
-            <p className="mt-8 text-sm text-muted-foreground">2026 BlippAI</p>
+            <p className="mt-8 text-sm text-muted-foreground">
+              &copy; 2026 BlippAI. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>

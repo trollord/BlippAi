@@ -256,6 +256,153 @@
   transform: translateY(-100%);
 }
 
+/* ---- Mobile navigation (below md only; the desktop link row is untouched) ----
+   Everything lives inside this query on purpose. These rules are unlayered, so at
+   desktop widths they would out-rank Tailwind's `md:hidden` (which sits in
+   @layer utilities) and leak the toggle into the desktop header. 767.98px closes
+   the sub-pixel gap against Tailwind's md breakpoint at 768px. */
+
+@media (max-width: 767.98px) {
+  /* An open menu needs a solid header, not the scrolled glass, or the hero type
+     behind it ghosts through the panel. */
+  .lux-header[data-menu="true"] {
+    background-color: var(--lux-band-deep);
+    backdrop-filter: none;
+  }
+
+  .lux-nav-toggle {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    width: 2.75rem;
+    margin-right: -0.5rem;
+    border: 1px solid var(--lux-rule-highlight);
+    border-radius: 999px;
+    color: var(--color-foreground);
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .lux-nav-toggle[aria-expanded="true"] {
+    border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+    background-color: var(--lux-signal-whisper);
+  }
+
+  .lux-nav-toggle-icon {
+    position: relative;
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* All three bars sit on the centre line; the closed state is two of them offset. */
+  .lux-nav-toggle-bar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    margin-top: -0.75px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.2s ease;
+  }
+
+  .lux-nav-toggle-bar:nth-child(1) {
+    transform: translateY(-5px);
+  }
+
+  .lux-nav-toggle-bar:nth-child(3) {
+    transform: translateY(5px);
+  }
+
+  .lux-nav-toggle[aria-expanded="true"] .lux-nav-toggle-bar:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .lux-nav-toggle[aria-expanded="true"] .lux-nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+
+  .lux-nav-toggle[aria-expanded="true"] .lux-nav-toggle-bar:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  /* z-index sits under the header's 50 so the bar and panel stay above it. */
+  .lux-nav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    cursor: default;
+    background-color: oklch(0.1 0.01 250 / 55%);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .lux-nav-scrim[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .lux-nav-panel {
+    position: absolute;
+    inset: 100% 0 auto;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    border-bottom: 1px solid transparent;
+    background-color: var(--lux-band-deep);
+    transition:
+      max-height 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s ease,
+      border-color 0.3s ease,
+      visibility 0s linear 0.42s;
+  }
+
+  .lux-nav-panel[data-open="true"] {
+    max-height: min(78svh, 32rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 1;
+    visibility: visible;
+    border-bottom-color: var(--lux-rule);
+    transition-delay: 0s;
+  }
+
+  .lux-nav-panel-link {
+    display: flex;
+    align-items: center;
+    min-height: 3.25rem;
+    font-size: 1.0625rem;
+    color: var(--color-foreground);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lux-nav-panel-link + .lux-nav-panel-link {
+    border-top: 1px solid var(--lux-rule);
+  }
+
+  .lux-nav-panel-mail {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--lux-rule);
+    font-size: 0.9375rem;
+    color: var(--color-muted-foreground);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lux-header {
     transition: none;
@@ -263,6 +410,13 @@
 
   .lux-header[data-hidden="true"] {
     transform: none;
+  }
+
+  .lux-nav-toggle,
+  .lux-nav-toggle-bar,
+  .lux-nav-scrim,
+  .lux-nav-panel {
+    transition: none;
   }
 }
 
