@@ -92,7 +92,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "/blippai-logo.png" },
+      { property: "og:image", content: "/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "BlippAI" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BlippAI. Sovereign AI you own and run." },
@@ -101,7 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
-      { name: "twitter:image", content: "/blippai-logo.png" },
+      { name: "twitter:image", content: "/og-image.png" },
     ],
     links: [
       {
