@@ -4,21 +4,29 @@ import { V3Page } from "@/components/V3Page";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BlippAI — Sovereign AI systems you own and run" },
+      { title: "BlippAI. Sovereign AI you own and run." },
       {
         name: "description",
         content:
-          "BlippAI designs custom AI systems built, owned and run inside your own infrastructure — for governments, enterprises and regulated industries.",
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
-      { property: "og:title", content: "BlippAI — Sovereign AI systems you own and run" },
+      { property: "og:title", content: "BlippAI. Sovereign AI you own and run." },
       {
         property: "og:description",
         content:
-          "Custom AI infrastructure trained on your data, deployed in your environment, governed by your policies.",
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/blippai-logo.png" },
+      { property: "og:image:alt", content: "BlippAI" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BlippAI. Sovereign AI you own and run." },
+      {
+        name: "twitter:description",
+        content:
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
+      },
+      { name: "twitter:image", content: "/blippai-logo.png" },
     ],
   }),
   component: V3Page,

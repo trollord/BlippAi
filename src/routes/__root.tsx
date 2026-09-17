@@ -77,19 +77,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BlippAI — Sovereign AI systems you own and run" },
+      { title: "BlippAI. Sovereign AI you own and run." },
       {
         name: "description",
-        content: "Custom AI systems built, owned and run inside your own infrastructure.",
+        content:
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
       { name: "author", content: "BlippAI" },
-      { property: "og:title", content: "BlippAI — Sovereign AI systems you own and run" },
+      { property: "og:site_name", content: "BlippAI" },
+      { property: "og:title", content: "BlippAI. Sovereign AI you own and run." },
       {
         property: "og:description",
-        content: "Custom AI systems built, owned and run inside your own infrastructure.",
+        content:
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/blippai-logo.png" },
+      { property: "og:image:alt", content: "BlippAI" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BlippAI. Sovereign AI you own and run." },
+      {
+        name: "twitter:description",
+        content:
+          "Custom AI systems built around your data, running on your infrastructure, and fully owned by you.",
+      },
+      { name: "twitter:image", content: "/blippai-logo.png" },
     ],
     links: [
       {
